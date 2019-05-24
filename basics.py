@@ -37,6 +37,15 @@ tag.name = "b" #Reverse tagname to bold tag
 	"""
 	Tag Attributes
 	"""
+print(tag["id"]) #tag["attribute"] eg tag["class"]. This prints none since the bold tag contains no attributes
+
+tag["id"] = "boldest" #assigns b tag a `boldest` id
+print (tag.attrs) # {"id": "boldest"}
+tag["class"] = "bold-text"
+print (tag.attrs) # {"class": "bold-text", "id":"boldest"}
+
+del tag["id"] #deletes id attribute 
+
 
 
 
