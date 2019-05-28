@@ -8,15 +8,27 @@ except requests.exceptions.RequestException as e:
 
 else:
 	soup = BeautifulSoup(response.text, "html.parser")
-	#movies = soup.find_all("td", class_="titleColumn")
-	movies = soup.find_all("td", class_="titleColumn")
-	release_date = soup.table.tbody.tr.find("td", class_="titleColumn").span.text
-	people = soup.table.tbody.tr.find("td", class_="titleColumn").a["title"]
-	for movie in movies:
-		movie_name = movie.a.text
-		release_date = movie.span.text
-		director = movie.a["title"].split(",")[0][:-6]
-		actors = " ".join(str(movie.a["title"]).split(",")[1:])
-		print("{} released on {} directed by {} acted by {}".format(movie_name,release_date,director,actors,))
 
-	
+	movies = soup.find_all("tr")
+	fl = open("movies.txt", "w")
+	for movie in movies:
+		title_info = movie.find("td", {"class":"titleColumn"})
+		rating_info = movie.find("td", {"class":"ratingColumn"})
+		if title_info is not None and rating_info is not None:
+			title = title_info.a.text
+			rating = rating_info.strong.text
+			release_date = title_info.span.text
+			director = title_info.a["title"].split(",")[0][:-6]
+			actors = " ".join(str(title_info.a["title"]).split(",")[1:])		
+
+			fl.write("{} rated {} released on {} directed by{} and acted by {} \n\n".format(title,rating,release_date,director, actors))
+
+	fl.close()
+
+
+		#movie_name = movie.a.text
+		#release_date = movie.span.text
+		#rating = movies.
+		#director = movie.a["title"].split(",")[0][:-6]
+		#actors = " ".join(str(movie.a["title"]).split(",")[1:])
+		#print("{}\n Release date: {} \tDirector:{} \tActors:{} \n".format(movie_name,release_date,director,actors,))
